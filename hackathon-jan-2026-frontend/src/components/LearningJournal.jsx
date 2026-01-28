@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Header from './Header';
 import Sidebar from './Sidebar';
 import ProgressDashboard from './ProgressDashboard';
 import OTJEntryForm from './OTJEntryForm';
@@ -22,6 +23,7 @@ function LearningJournal() {
   ]);
 
   const [showForm, setShowForm] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Target hours for the apprenticeship (example: 6 hours per week)
   const weeklyTarget = 6;
@@ -46,7 +48,11 @@ function LearningJournal() {
 
   return (
     <div className="learning-journal">
-      <Sidebar />
+      <Header 
+        onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        isCollapsed={isSidebarCollapsed}
+      />
+      <Sidebar isCollapsed={isSidebarCollapsed} />
       
       <div className="main-content">
         <header className="journal-header">

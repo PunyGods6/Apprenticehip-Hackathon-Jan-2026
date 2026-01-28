@@ -1,7 +1,7 @@
 .sidebar {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 60px;
   bottom: 0;
   width: 200px;
   background: #2c3e50;
@@ -15,58 +15,6 @@
 
 .sidebar.collapsed {
   width: 50px;
-}
-
-.sidebar-header {
-  padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hamburger-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-  flex-shrink: 0;
-}
-
-.hamburger-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.hamburger-line {
-  width: 20px;
-  height: 2px;
-  background: white;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.logo-icon {
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.logo-text {
-  color: white;
-  letter-spacing: -0.5px;
 }
 
 .sidebar-nav {
@@ -95,8 +43,13 @@
 }
 
 .sidebar.collapsed .nav-item {
-  padding: 12px;
+  padding: 12px 0;
   justify-content: center;
+  border-left: none;
+}
+
+.sidebar.collapsed .nav-item.active::before {
+  display: none;
 }
 
 .nav-item:hover {
@@ -125,6 +78,13 @@
   font-size: 18px;
   min-width: 20px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.collapsed .nav-icon {
+  min-width: 100%;
 }
 
 .nav-label {
@@ -133,9 +93,7 @@
 }
 
 .sidebar.collapsed .nav-label {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+  display: none;
 }
 
 .nav-badge {
@@ -151,9 +109,7 @@
 }
 
 .sidebar.collapsed .nav-badge {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+  display: none;
 }
 
 .nav-item:hover .nav-badge {

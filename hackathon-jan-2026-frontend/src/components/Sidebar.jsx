@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import './Sidebar.css';
 
-function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
+function Sidebar({ isCollapsed }) {
   const menuItems = [
     { icon: '🏠', label: 'Home', active: false },
     { icon: '💼', label: 'Portfolio', active: false },
@@ -21,22 +18,6 @@ function Sidebar() {
 
   return (
     <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <button 
-          className="hamburger-btn"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          aria-label="Toggle sidebar"
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
-        <div className="logo">
-          <span className="logo-icon">📝</span>
-          <span className="logo-text">OneFile</span>
-        </div>
-      </div>
-
       <nav className="sidebar-nav">
         {menuItems.map((item, index) => (
           <button

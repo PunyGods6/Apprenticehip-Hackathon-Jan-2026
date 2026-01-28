@@ -209,7 +209,7 @@ function OTJEntryForm({ onSave, onCancel }) {
                 onChange={(e) => handleChange('isOffTheJob', e.target.checked)}
               />
               <span className="checkbox-text">
-                Mark as Off-the-Job learning
+                Mark as Off-The-Job learning
                 <span className="checkbox-help">
                   This will count towards your OTJ hours target
                 </span>
