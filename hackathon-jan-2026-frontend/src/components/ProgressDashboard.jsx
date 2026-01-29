@@ -23,7 +23,7 @@ function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries }
           <div className="stat-icon">📊</div>
           <div className="stat-content">
             <h3>Total OTJ Hours</h3>
-            <p className="stat-value">{totalOTJHours}h</p>
+            <p className="stat-value">{totalOTJHours.toFixed(1)}h</p>
             <p className="stat-subtitle">of {totalTarget}h target</p>
           </div>
         </div>
@@ -32,7 +32,7 @@ function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries }
           <div className="stat-icon">📅</div>
           <div className="stat-content">
             <h3>This Week</h3>
-            <p className="stat-value">{currentWeekHours}h</p>
+            <p className="stat-value">{currentWeekHours.toFixed(1)}h</p>
             <p className="stat-subtitle">Target: {weeklyTarget}h/week</p>
           </div>
         </div>
@@ -42,7 +42,7 @@ function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries }
           <div className="stat-content">
             <h3>OTJ Weekly Target</h3>
             <p className="stat-value">
-              {variance >= 0 ? '+' : ''}{variance}h
+              {variance >= 0 ? '+' : ''}{variance.toFixed(1)}h
             </p>
             <p className="stat-subtitle">
               {variance >= 0 ? 'Ahead of target!' : 'Behind target'}
@@ -74,8 +74,8 @@ function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries }
           />
         </div>
         <div className="progress-footer">
-          <span>{totalOTJHours} hours logged</span>
-          <span>{totalTarget - totalOTJHours} hours remaining</span>
+          <span>{totalOTJHours.toFixed(1)} hours logged</span>
+          <span>{(totalTarget - totalOTJHours).toFixed(1)} hours remaining</span>
         </div>
       </div>
     </div>

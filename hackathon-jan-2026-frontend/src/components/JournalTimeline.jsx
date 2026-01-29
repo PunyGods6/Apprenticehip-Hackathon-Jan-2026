@@ -51,7 +51,7 @@ function JournalTimeline({ entries }) {
 
                   <div className="entry-meta">
                     <span className="entry-category">📚 {entry.category}</span>
-                    <span className="entry-hours">⏱️ {entry.totalHours}h</span>
+                    <span className="entry-hours">⏱️ {entry.totalHours?.toFixed(1) || 0}h</span>
                   </div>
 
                   {entry.description && (
@@ -86,7 +86,7 @@ function JournalTimeline({ entries }) {
 
                   <div className="entry-footer">
                     <span className="entry-timestamp">
-                      Created {formatDate(entry.createdAt)} at {formatTime(entry.createdAt)}
+                      Created {formatDate(entry.creation)} at {formatTime(entry.creation)}
                     </span>
                   </div>
                 </div>

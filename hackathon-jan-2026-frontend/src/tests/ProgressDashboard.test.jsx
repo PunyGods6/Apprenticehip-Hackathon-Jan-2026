@@ -1,0 +1,175 @@
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import ProgressDashboard from '../components/ProgressDashboard';
+
+describe('ProgressDashboard', () => {
+  describe('Calculation Tests - Total OTJ Hours', () => {
+    it('should display total OTJ hours correctly', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 2, date: '2026-01-20' },
+        { isOffTheJob: true, totalHours: 3, date: '2026-01-21' },
+        { isOffTheJob: false, totalHours: 5, date: '2026-01-22' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={5}  // 2 + 3
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      expect(screen.getByText('5h')).toBeInTheDocument();
+    });
+
+    it('should handle zero OTJ hours', () => {
+      const entries = [];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={0}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Check in the Total OTJ Hours card specifically
+      expect(screen.getByText('Total OTJ Hours')).toBeInTheDocument();
+      expect(screen.getByText('of 312h target')).toBeInTheDocument();
+    });
+
+    it('should display correct target hours', () => {
+      const entries = [];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={0}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      expect(screen.getByText('of 312h target')).toBeInTheDocument();
+    });
+  });
+
+  describe('Calculation Tests - Variance', () => {
+    it('should show ahead of target when hours exceed weekly target', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 8, date: '2026-01-20' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={8}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Variance = 8 - 6 = +2h
+      expect(screen.getByText('+2h')).toBeInTheDocument();
+      expect(screen.getByText('Ahead of target!')).toBeInTheDocument();
+    });
+
+    it('should show behind target when hours are less than weekly target', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 2, date: '2026-01-20' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={2}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Variance = 2 - 6 = -4h
+      expect(screen.getByText('-4h')).toBeInTheDocument();
+      expect(screen.getByText('Behind target')).toBeInTheDocument();
+    });
+  });
+
+  describe('Calculation Tests - Progress Percentage', () => {
+    it('should calculate progress percentage correctly', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 31, date: '2026-01-20' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={31}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Component displays with 1 decimal place: 9.9%
+      expect(screen.getByText(/9\.9%/)).toBeInTheDocument();
+    });
+
+    it('should handle 100% completion', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 312, date: '2026-01-20' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={312}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Component displays as 100.0%
+      expect(screen.getByText(/100\.0%/)).toBeInTheDocument();
+    });
+  });
+
+  describe('Display Tests', () => {
+    it('should display total entries count', () => {
+      const entries = [
+        { isOffTheJob: true, totalHours: 2, date: '2026-01-20' },
+        { isOffTheJob: true, totalHours: 3, date: '2026-01-21' },
+        { isOffTheJob: false, totalHours: 1, date: '2026-01-22' },
+      ];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={5}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      // Should show 3 total entries
+      expect(screen.getByText('3')).toBeInTheDocument();
+      // Should show 2 off-the-job entries
+      expect(screen.getByText('2 off-the-job')).toBeInTheDocument();
+    });
+
+    it('should display weekly target correctly', () => {
+      const entries = [];
+
+      render(
+        <ProgressDashboard
+          totalOTJHours={0}
+          entries={entries}
+          weeklyTarget={6}
+          totalTarget={312}
+        />
+      );
+
+      expect(screen.getByText('Target: 6h/week')).toBeInTheDocument();
+    });
+  });
+});

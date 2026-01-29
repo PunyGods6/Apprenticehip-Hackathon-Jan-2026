@@ -55,7 +55,7 @@ function OTJEntryForm({ onSave, onCancel }) {
       const durationMinutes = endMinutes - startMinutes;
       const hours = durationMinutes / 60;
       
-      return hours > 0 ? hours : 0;
+      return hours > 0 ? Math.round(hours * 10) / 10 : 0;
     }
     return 0;
   };
@@ -74,8 +74,15 @@ function OTJEntryForm({ onSave, onCancel }) {
       return;
     }
 
+    // Send only the fields the backend expects
     onSave({
-      ...formData,
+      title: formData.title,
+      description: formData.description || 'No description provided',
+      category: formData.category,
+      date: formData.date,
+      startTime: formData.startTime,
+      endTime: formData.endTime,
+      isOffTheJob: formData.isOffTheJob,
       totalHours: duration
     });
   };

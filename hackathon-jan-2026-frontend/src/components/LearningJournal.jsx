@@ -1,49 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import ProgressDashboard from './ProgressDashboard';
 import OTJEntryForm from './OTJEntryForm';
 import JournalTimeline from './JournalTimeline';
+import { otjApi } from '../services/api';
 import './LearningJournal.css';
 
 function LearningJournal() {
-  const [entries, setEntries] = useState([
-    {
-      id: 1,
-      date: '2026-01-22',
-      title: 'Digi-Dev Monthly Huddle',
-      category: 'Attending webinars on key industry topics',
-      description: 'More on AI integration and tools.',
-      isOffTheJob: true,
-      totalHours: 1,
-      ksbs: [],
-      documents: [],
-      createdAt: '2026-01-23T15:43:00'
-    }
-  ]);
-
+  const [entries, setEntries] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Target hours for the apprenticeship (example: 6 hours per week)
   const weeklyTarget = 6;
   const totalTarget = weeklyTarget * 52; // Annual target
+
+  // Fetch entries from backend on mount
+  useEffect(() => {
+    loadEntries();
+  }, []);
+
+  const loadEntries = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await otjApi.getAllEntries();
+      setEntries(data || []);
+    } catch (err) {
+      console.error('Failed to load entries:', err);
+      setError('Failed to load entries. Make sure the backend is running.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Calculate total OTJ hours logged
   const totalOTJHours = entries
     .filter(entry => entry.isOffTheJob)
     .reduce((sum, entry) => sum + entry.totalHours, 0);
 
-  const handleAddEntry = (newEntry) => {
-    setEntries([
-      {
-        ...newEntry,
-        id: entries.length + 1,
-        createdAt: new Date().toISOString()
-      },
-      ...entries
-    ]);
-    setShowForm(false);
+  const handleAddEntry = async (newEntry) => {
+    try {
+      const createdEntry = await otjApi.createEntry(newEntry);
+      setEntries([createdEntry, ...entries]);
+      setShowForm(false);
+    } catch (err) {
+      console.error('Failed to create entry:', err);
+      alert('Failed to save entry. Please try again.');
+    }
   };
 
   return (
@@ -67,21 +74,42 @@ function LearningJournal() {
           </div>
         </header>
 
-        <ProgressDashboard 
-          totalOTJHours={totalOTJHours}
-          weeklyTarget={weeklyTarget}
-          totalTarget={totalTarget}
-          entries={entries}
-        />
-
-        {showForm && (
-          <OTJEntryForm 
-            onSave={handleAddEntry}
-            onCancel={() => setShowForm(false)}
-          />
+        {error && (
+          <div style={{
+            background: '#fee',
+            border: '1px solid #fcc',
+            borderRadius: '8px',
+            padding: '12px 16px',
+            margin: '0 0 20px 0',
+            color: '#c33'
+          }}>
+            {error}
+          </div>
         )}
 
-        <JournalTimeline entries={entries} />
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+            Loading entries...
+          </div>
+        ) : (
+          <>
+            <ProgressDashboard 
+              totalOTJHours={totalOTJHours}
+              weeklyTarget={weeklyTarget}
+              totalTarget={totalTarget}
+              entries={entries}
+            />
+
+            {showForm && (
+              <OTJEntryForm 
+                onSave={handleAddEntry}
+                onCancel={() => setShowForm(false)}
+              />
+            )}
+
+            <JournalTimeline entries={entries} />
+          </>
+        )}
       </div>
     </div>
   );
