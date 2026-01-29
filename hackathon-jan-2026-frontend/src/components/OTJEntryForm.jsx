@@ -96,13 +96,8 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
     const newMode = !multiDateMode;
     setMultiDateMode(newMode);
     if (newMode) {
-      // When enabling multi-mode, add current date to selected dates only if it's valid
-      const today = new Date().toISOString().split('T')[0];
-      if (formData.date && formData.date <= today) {
-        setSelectedDates([formData.date]);
-      } else {
-        setSelectedDates([]);
-      }
+      // When enabling multi-mode, always start with empty selection
+      setSelectedDates([]);
     } else {
       // When disabling multi-mode, clear selected dates
       setSelectedDates([]);
@@ -246,7 +241,7 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
                   />
                   <div className="selected-dates">
                     {selectedDates.length === 0 ? (
-                      <p className="no-dates">Input date and press Enter or click the date picker above to select dates</p>
+                      <p className="no-dates"><b><u>Note:</u> Input date and press Enter or click the date picker above to select dates</b></p>
                     ) : (
                       selectedDates.map(date => (
                         <span key={date} className="date-chip">
