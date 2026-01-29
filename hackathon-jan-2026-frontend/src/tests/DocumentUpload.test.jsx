@@ -6,7 +6,7 @@ import DocumentUpload from '../components/DocumentUpload';
 describe('DocumentUpload - File Validation', () => {
   it('should accept valid PDF file', async () => {
     const user = userEvent.setup();
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={[]} onChange={mockOnChange} />);
 
@@ -22,13 +22,13 @@ describe('DocumentUpload - File Validation', () => {
 
   it('should accept valid Word document', async () => {
     const user = userEvent.setup();
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={[]} onChange={mockOnChange} />);
 
     const fileInput = screen.getByLabelText(/choose files/i);
-    const file = new File(['dummy content'], 'document.docx', { 
-      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+    const file = new File(['dummy content'], 'document.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     });
 
     await user.upload(fileInput, file);
@@ -38,13 +38,13 @@ describe('DocumentUpload - File Validation', () => {
 
   it('should accept valid Excel file', async () => {
     const user = userEvent.setup();
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={[]} onChange={mockOnChange} />);
 
     const fileInput = screen.getByLabelText(/choose files/i);
-    const file = new File(['dummy content'], 'spreadsheet.xlsx', { 
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+    const file = new File(['dummy content'], 'spreadsheet.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
 
     await user.upload(fileInput, file);
@@ -54,7 +54,7 @@ describe('DocumentUpload - File Validation', () => {
 
   it('should accept valid image file', async () => {
     const user = userEvent.setup();
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={[]} onChange={mockOnChange} />);
 
@@ -68,7 +68,7 @@ describe('DocumentUpload - File Validation', () => {
 
   it('should accept multiple valid file types', async () => {
     const user = userEvent.setup();
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={[]} onChange={mockOnChange} />);
 
@@ -90,7 +90,7 @@ describe('DocumentUpload - Display', () => {
       { id: 1, name: 'report.pdf', size: 1024000, type: 'application/pdf' },
       { id: 2, name: 'screenshot.png', size: 2048000, type: 'image/png' },
     ];
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={documents} onChange={mockOnChange} />);
 
@@ -103,7 +103,7 @@ describe('DocumentUpload - Display', () => {
       { id: 1, name: 'small.pdf', size: 1024, type: 'application/pdf' }, // 1 KB
       { id: 2, name: 'medium.pdf', size: 1048576, type: 'application/pdf' }, // 1 MB
     ];
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={documents} onChange={mockOnChange} />);
 
@@ -115,7 +115,7 @@ describe('DocumentUpload - Display', () => {
     const documents = [
       { id: 1, name: 'document.pdf', size: 1024000, type: 'application/pdf' },
     ];
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<DocumentUpload documents={documents} onChange={mockOnChange} />);
 
@@ -125,7 +125,7 @@ describe('DocumentUpload - Display', () => {
   });
 
   it('should show empty state when no documents', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
 
     expect(screen.getByText(/drag files here to upload/i)).toBeInTheDocument();
     expect(screen.getByText(/choose files/i)).toBeInTheDocument();
@@ -152,7 +152,7 @@ describe('DocumentUpload - User Interactions', () => {
   });
 
   it('should have accessible file input', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
 
     const fileInput = screen.getByLabelText(/choose files/i);
     expect(fileInput).toHaveAttribute('type', 'file');
@@ -160,7 +160,7 @@ describe('DocumentUpload - User Interactions', () => {
   });
 
   it('should allow multiple file selection', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
 
     const fileInput = screen.getByLabelText(/choose files/i);
     expect(fileInput).toHaveAttribute('multiple');
@@ -169,29 +169,29 @@ describe('DocumentUpload - User Interactions', () => {
 
 describe('DocumentUpload - File Type Support', () => {
   it('should accept PDF files', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
-    
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
+
     const fileInput = screen.getByLabelText(/choose files/i);
     const acceptAttribute = fileInput.getAttribute('accept');
-    
+
     expect(acceptAttribute).toContain('.pdf');
   });
 
   it('should accept Word documents', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
-    
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
+
     const fileInput = screen.getByLabelText(/choose files/i);
     const acceptAttribute = fileInput.getAttribute('accept');
-    
+
     expect(acceptAttribute).toContain('.doc');
   });
 
   it('should accept image files', () => {
-    render(<DocumentUpload documents={[]} onChange={() => {}} />);
-    
+    render(<DocumentUpload documents={[]} onChange={() => { }} />);
+
     const fileInput = screen.getByLabelText(/choose files/i);
     const acceptAttribute = fileInput.getAttribute('accept');
-    
+
     expect(acceptAttribute).toContain('.png');
     expect(acceptAttribute).toContain('.jpg');
   });

@@ -16,7 +16,7 @@ function DocumentUpload({ documents, onChange }) {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = Array.from(e.dataTransfer.files);
     addFiles(files);
   };
@@ -41,7 +41,7 @@ function DocumentUpload({ documents, onChange }) {
     ];
 
     const validFiles = files.filter(file => validTypes.includes(file.type));
-    
+
     const newDocuments = validFiles.map(file => ({
       id: Date.now() + Math.random(),
       name: file.name,

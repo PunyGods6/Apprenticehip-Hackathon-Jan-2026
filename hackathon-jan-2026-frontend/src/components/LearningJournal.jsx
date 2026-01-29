@@ -109,7 +109,7 @@ function LearningJournal() {
     if (!window.confirm('Are you sure you want to delete this entry?')) {
       return;
     }
-    
+
     try {
       await otjApi.deleteEntry(entryId);
       setEntries(entries.filter(e => e.id !== entryId));
@@ -126,17 +126,17 @@ function LearningJournal() {
 
   return (
     <div className="learning-journal">
-      <Header 
+      <Header
         onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         isCollapsed={isSidebarCollapsed}
       />
       <Sidebar isCollapsed={isSidebarCollapsed} />
-      
+
       <div className="main-content">
         <header className="journal-header">
           <div className="header-content">
             <h1>Learning Journal</h1>
-            <button 
+            <button
               className="btn-primary"
               onClick={() => setShowForm(!showForm)}
             >
@@ -164,7 +164,7 @@ function LearningJournal() {
           </div>
         ) : (
           <>
-            <ProgressDashboard 
+            <ProgressDashboard
               totalOTJHours={totalOTJHours}
               weeklyTarget={weeklyTarget}
               totalTarget={totalTarget}
@@ -175,14 +175,14 @@ function LearningJournal() {
             <HolidayMode onHolidayModeChange={setHolidayMode} />
 
             {showForm && (
-              <OTJEntryForm 
+              <OTJEntryForm
                 onSave={editingEntry ? handleUpdateEntry : handleAddEntry}
                 onCancel={handleCancelEdit}
                 initialData={editingEntry}
               />
             )}
 
-            <JournalTimeline 
+            <JournalTimeline
               entries={entries}
               onEdit={handleEditEntry}
               onDelete={handleDeleteEntry}

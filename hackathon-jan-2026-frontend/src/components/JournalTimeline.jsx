@@ -21,7 +21,7 @@ function JournalTimeline({ entries, onEdit, onDelete }) {
   return (
     <div className="journal-timeline">
       <h2>Your Entries</h2>
-      
+
       {entries.length === 0 ? (
         <div className="empty-state">
           <p>No entries yet. Click "+ Add New Entry" to get started!</p>
@@ -49,16 +49,16 @@ function JournalTimeline({ entries, onEdit, onDelete }) {
                         <span className="otj-badge">✓ Off the Job</span>
                       )}
                       <div className="entry-actions">
-                        <button 
-                          className="btn-icon-action" 
+                        <button
+                          className="btn-icon-action"
                           onClick={() => onEdit(entry)}
                           title="Edit entry"
                           aria-label="Edit entry"
                         >
                           ✏️
                         </button>
-                        <button 
-                          className="btn-icon-action btn-delete" 
+                        <button
+                          className="btn-icon-action btn-delete"
                           onClick={() => onDelete(entry.id)}
                           title="Delete entry"
                           aria-label="Delete entry"

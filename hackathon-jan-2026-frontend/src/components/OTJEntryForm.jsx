@@ -64,13 +64,13 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
     if (formData.startTime && formData.endTime) {
       const [startHour, startMin] = formData.startTime.split(':').map(Number);
       const [endHour, endMin] = formData.endTime.split(':').map(Number);
-      
+
       const startMinutes = startHour * 60 + startMin;
       const endMinutes = endHour * 60 + endMin;
-      
+
       const durationMinutes = endMinutes - startMinutes;
       const hours = durationMinutes / 60;
-      
+
       return hours > 0 ? Math.round(hours * 10) / 10 : 0;
     }
     return 0;
@@ -111,7 +111,7 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.category) {
       alert('Please fill in all required fields');
       return;
@@ -250,8 +250,8 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
                     ) : (
                       selectedDates.map(date => (
                         <span key={date} className="date-chip">
-                          {new Date(date).toLocaleDateString('en-GB', { 
-                            day: 'numeric', 
+                          {new Date(date).toLocaleDateString('en-GB', {
+                            day: 'numeric',
                             month: 'short',
                             year: 'numeric'
                           })}

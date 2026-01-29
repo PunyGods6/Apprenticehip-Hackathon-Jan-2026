@@ -2,15 +2,15 @@ import './ProgressDashboard.css';
 
 function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries, holidayMode = false }) {
   const progressPercentage = Math.min((totalOTJHours / totalTarget) * 100, 100);
-  
+
   // Calculate variance - if holiday mode is on, show 0 variance (no penalty)
   const variance = holidayMode ? 0 : (totalOTJHours - weeklyTarget);
-  
+
   // Calculate current week's hours
   const currentWeekStart = new Date();
   currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay());
   currentWeekStart.setHours(0, 0, 0, 0);
-  
+
   const currentWeekHours = entries
     .filter(entry => {
       const entryDate = new Date(entry.date);
@@ -70,8 +70,8 @@ function ProgressDashboard({ totalOTJHours, weeklyTarget, totalTarget, entries, 
           <span className="progress-percentage">{progressPercentage.toFixed(1)}%</span>
         </div>
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
+          <div
+            className="progress-fill"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>

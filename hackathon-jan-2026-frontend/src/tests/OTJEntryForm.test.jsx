@@ -6,8 +6,8 @@ import OTJEntryForm from '../components/OTJEntryForm';
 describe('OTJEntryForm - Duration Calculation', () => {
   it('should calculate duration correctly when times are entered', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -28,8 +28,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
   it('should calculate duration for whole hours', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -47,8 +47,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
   it('should calculate duration for minutes only', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -66,8 +66,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
   it('should show 0 duration when end time is before start time', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -85,8 +85,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
   it('should update duration when times change', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -111,8 +111,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
   it('should show calculated duration in the displayed format', async () => {
     const user = userEvent.setup();
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -131,8 +131,8 @@ describe('OTJEntryForm - Duration Calculation', () => {
 
 describe('OTJEntryForm - Form Validation', () => {
   it('should render all required form fields', () => {
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
@@ -144,8 +144,8 @@ describe('OTJEntryForm - Form Validation', () => {
   });
 
   it('should have submit and cancel buttons', () => {
-    const mockOnSubmit = () => {};
-    const mockOnCancel = () => {};
+    const mockOnSubmit = () => { };
+    const mockOnCancel = () => { };
 
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 

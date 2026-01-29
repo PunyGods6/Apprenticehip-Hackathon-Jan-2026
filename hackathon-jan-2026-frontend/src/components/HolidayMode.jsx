@@ -11,7 +11,7 @@ function HolidayMode({ onHolidayModeChange }) {
   const [isEditingAllowance, setIsEditingAllowance] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const APPRENTICE_ID = 1; // In a real app, this would come from auth context
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function HolidayMode({ onHolidayModeChange }) {
       setLoading(true);
       const holidays = await holidayApi.getAllHolidays();
       const userHoliday = holidays.find(h => h.apprenticeId === APPRENTICE_ID);
-      
+
       if (userHoliday) {
         setHolidayData(userHoliday);
         setIsEnabled(userHoliday.holidayMode || false);
@@ -76,7 +76,7 @@ function HolidayMode({ onHolidayModeChange }) {
   const handleDaysUpdate = async (newDays) => {
     const days = Math.max(0, Math.min(allowance, parseInt(newDays) || 0));
     setDaysUsed(days);
-    
+
     try {
       const updated = await holidayApi.updateHoliday(holidayData.id, {
         apprenticeId: APPRENTICE_ID,
@@ -95,13 +95,13 @@ function HolidayMode({ onHolidayModeChange }) {
   const handleAllowanceUpdate = async (newAllowance) => {
     const allowanceDays = Math.max(1, parseInt(newAllowance) || 28);
     setAllowance(allowanceDays);
-    
+
     // If days used exceeds new allowance, cap it
     const cappedDaysUsed = Math.min(daysUsed, allowanceDays);
     if (cappedDaysUsed !== daysUsed) {
       setDaysUsed(cappedDaysUsed);
     }
-    
+
     try {
       const updated = await holidayApi.updateHoliday(holidayData.id, {
         apprenticeId: APPRENTICE_ID,
@@ -137,8 +137,8 @@ function HolidayMode({ onHolidayModeChange }) {
             <div>
               <h3>Holiday Mode</h3>
               <p className="holiday-subtitle">
-                {isEnabled 
-                  ? 'OTJ targets paused while on holiday' 
+                {isEnabled
+                  ? 'OTJ targets paused while on holiday'
                   : 'Enable when taking time off'}
               </p>
             </div>
@@ -185,8 +185,8 @@ function HolidayMode({ onHolidayModeChange }) {
                   autoFocus
                 />
               ) : (
-                <span 
-                  className="stat-value clickable" 
+                <span
+                  className="stat-value clickable"
                   onClick={() => setIsEditing(true)}
                   title="Click to edit"
                 >
@@ -231,8 +231,8 @@ function HolidayMode({ onHolidayModeChange }) {
                   autoFocus
                 />
               ) : (
-                <span 
-                  className="stat-value clickable" 
+                <span
+                  className="stat-value clickable"
                   onClick={() => setIsEditingAllowance(true)}
                   title="Click to edit"
                 >
@@ -246,8 +246,8 @@ function HolidayMode({ onHolidayModeChange }) {
 
         <div className="holiday-progress">
           <div className="progress-bar">
-            <div 
-              className="progress-fill holiday-fill" 
+            <div
+              className="progress-fill holiday-fill"
               style={{ width: `${percentageUsed}%` }}
             ></div>
           </div>

@@ -4,15 +4,15 @@ import userEvent from '@testing-library/user-event';
 import KSBSelector from '../components/KSBSelector';
 
 describe('KSBSelector - Search and Filter', () => {
-  const mockOnChange = () => {};
+  const mockOnChange = () => { };
 
   it('should show search input when dropdown is opened', async () => {
     const user = userEvent.setup();
     render(<KSBSelector selectedKSBs={[]} onChange={mockOnChange} />);
-    
+
     // Open dropdown first
     await user.click(screen.getByText(/add ksb/i));
-    
+
     expect(screen.getByPlaceholderText(/search ksbs/i)).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe('KSBSelector - Search and Filter', () => {
     await user.click(screen.getByText(/add ksb/i));
 
     const searchInput = screen.getByPlaceholderText(/search ksbs/i);
-    
+
     // Search for "software"
     await user.type(searchInput, 'software');
 
@@ -123,7 +123,7 @@ describe('KSBSelector - Selection Management', () => {
       { id: 'S1', type: 'Skill', description: 'Ability to write clean, maintainable code' },
       { id: 'B1', type: 'Behaviour', description: 'Professional attitude and work ethic' }
     ];
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<KSBSelector selectedKSBs={selectedKSBs} onChange={mockOnChange} />);
 
@@ -137,7 +137,7 @@ describe('KSBSelector - Selection Management', () => {
     const selectedKSBs = [
       { id: 'K1', type: 'Knowledge', description: 'Understanding of software development lifecycle' }
     ];
-    const mockOnChange = () => {};
+    const mockOnChange = () => { };
 
     render(<KSBSelector selectedKSBs={selectedKSBs} onChange={mockOnChange} />);
 
@@ -172,7 +172,7 @@ describe('KSBSelector - Selection Management', () => {
 describe('KSBSelector - Display', () => {
   it('should show message when no KSBs match search', async () => {
     const user = userEvent.setup();
-    render(<KSBSelector selectedKSBs={[]} onChange={() => {}} />);
+    render(<KSBSelector selectedKSBs={[]} onChange={() => { }} />);
 
     // Open dropdown
     await user.click(screen.getByText(/add ksb/i));
@@ -185,7 +185,7 @@ describe('KSBSelector - Display', () => {
 
   it('should display KSB code and description in dropdown', async () => {
     const user = userEvent.setup();
-    render(<KSBSelector selectedKSBs={[]} onChange={() => {}} />);
+    render(<KSBSelector selectedKSBs={[]} onChange={() => { }} />);
 
     // Open dropdown
     await user.click(screen.getByText(/add ksb/i));

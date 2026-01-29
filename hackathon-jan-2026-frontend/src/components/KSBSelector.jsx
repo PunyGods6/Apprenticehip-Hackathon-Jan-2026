@@ -22,7 +22,7 @@ function KSBSelector({ selectedKSBs, onChange }) {
 
   const filteredKSBs = SAMPLE_KSBS.filter(ksb => {
     const matchesSearch = ksb.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         ksb.description.toLowerCase().includes(searchTerm.toLowerCase());
+      ksb.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'All' || ksb.type === filterType;
     return matchesSearch && matchesType;
   });

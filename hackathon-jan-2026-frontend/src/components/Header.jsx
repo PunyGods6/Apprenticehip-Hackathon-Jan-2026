@@ -4,7 +4,7 @@ function Header({ onToggleSidebar }) {
   return (
     <header className="app-header">
       <div className="header-left">
-        <button 
+        <button
           className="hamburger-btn"
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar"
@@ -26,7 +26,7 @@ function Header({ onToggleSidebar }) {
             <span className="icon-badge">0</span>
           </span>
         </button>
-        
+
         <button className="header-icon-btn" aria-label="Tasks">
           <span className="icon-wrapper">
             ✓
