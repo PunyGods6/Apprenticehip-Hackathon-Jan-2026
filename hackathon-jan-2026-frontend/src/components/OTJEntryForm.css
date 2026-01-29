@@ -24,6 +24,98 @@
   font-size: 24px;
   font-weight: 700;
   color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.entry-count-badge {
+  font-size: 14px;
+  font-weight: 500;
+  background: #667eea;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.multi-date-toggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #667eea;
+  cursor: pointer;
+}
+
+.multi-date-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.multi-date-toggle input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.multi-date-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.multi-date-selector .date-picker {
+  width: 100%;
+}
+
+.selected-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.no-dates {
+  margin: 0;
+  padding: 8px;
+  color: #9ca3af;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #667eea;
+  color: white;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.date-chip .remove-date {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.date-chip .remove-date:hover {
+  opacity: 1;
 }
 
 .form-group {

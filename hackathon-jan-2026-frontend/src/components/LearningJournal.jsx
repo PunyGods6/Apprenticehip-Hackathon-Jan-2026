@@ -19,8 +19,17 @@ function LearningJournal() {
 
   // Target hours for the apprenticeship (example: 6 hours per week)
   const weeklyTarget = 6;
-  const totalTarget = weeklyTarget * 52; // Annual target
+  const totalTarget = 396; // Annual target (matches backend course total)
   const APPRENTICE_ID = 1;
+
+  // Helper function to sort entries by date (most recent first)
+  const sortEntriesByDate = (entriesArray) => {
+    return [...entriesArray].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB - dateA; // Descending order (most recent first)
+    });
+  };
 
   // Fetch entries and holiday status from backend on mount
   useEffect(() => {
@@ -33,7 +42,7 @@ function LearningJournal() {
       setLoading(true);
       setError(null);
       const data = await otjApi.getAllEntries();
-      setEntries(data || []);
+      setEntries(sortEntriesByDate(data || []));
     } catch (err) {
       console.error('Failed to load entries:', err);
       setError('Failed to load entries. Make sure the backend is running.');
@@ -58,11 +67,21 @@ function LearningJournal() {
     .filter(entry => entry.isOffTheJob)
     .reduce((sum, entry) => sum + entry.totalHours, 0);
 
-  const handleAddEntry = async (newEntry) => {
+  const handleAddEntry = async (newEntry, isMultiple = false) => {
     try {
-      const createdEntry = await otjApi.createEntry(newEntry);
-      setEntries([createdEntry, ...entries]);
-      setShowForm(false);
+      if (isMultiple) {
+        // Handle multiple entries
+        const createdEntries = await Promise.all(
+          newEntry.map(entry => otjApi.createEntry(entry))
+        );
+        setEntries(sortEntriesByDate([...createdEntries, ...entries]));
+        setShowForm(false);
+      } else {
+        // Handle single entry
+        const createdEntry = await otjApi.createEntry(newEntry);
+        setEntries(sortEntriesByDate([createdEntry, ...entries]));
+        setShowForm(false);
+      }
     } catch (err) {
       console.error('Failed to create entry:', err);
       alert('Failed to save entry. Please try again.');
@@ -77,7 +96,7 @@ function LearningJournal() {
   const handleUpdateEntry = async (updatedEntry) => {
     try {
       const updated = await otjApi.updateEntry(editingEntry.id, updatedEntry);
-      setEntries(entries.map(e => e.id === editingEntry.id ? updated : e));
+      setEntries(sortEntriesByDate(entries.map(e => e.id === editingEntry.id ? updated : e)));
       setShowForm(false);
       setEditingEntry(null);
     } catch (err) {

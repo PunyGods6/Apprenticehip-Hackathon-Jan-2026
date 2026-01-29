@@ -56,6 +56,9 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
     }
   );
 
+  const [multiDateMode, setMultiDateMode] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
+
   // Calculate duration directly from formData
   const calculateDuration = () => {
     if (formData.startTime && formData.endTime) {
@@ -79,6 +82,33 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleDateToggle = (date) => {
+    setSelectedDates(prev => {
+      if (prev.includes(date)) {
+        return prev.filter(d => d !== date);
+      } else {
+        return [...prev, date].sort();
+      }
+    });
+  };
+
+  const handleMultiModeToggle = () => {
+    const newMode = !multiDateMode;
+    setMultiDateMode(newMode);
+    if (newMode) {
+      // When enabling multi-mode, add current date to selected dates only if it's valid
+      const today = new Date().toISOString().split('T')[0];
+      if (formData.date && formData.date <= today) {
+        setSelectedDates([formData.date]);
+      } else {
+        setSelectedDates([]);
+      }
+    } else {
+      // When disabling multi-mode, clear selected dates
+      setSelectedDates([]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -87,24 +117,51 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
       return;
     }
 
-    // Send only the fields the backend expects
-    onSave({
-      title: formData.title,
-      description: formData.description || 'No description provided',
-      category: formData.category,
-      date: formData.date,
-      startTime: formData.startTime,
-      endTime: formData.endTime,
-      isOffTheJob: formData.isOffTheJob,
-      totalHours: duration
-    });
+    if (multiDateMode && selectedDates.length === 0) {
+      alert('Please select at least one date');
+      return;
+    }
+
+    // If multi-date mode, create multiple entries
+    if (multiDateMode) {
+      const entries = selectedDates.map(date => ({
+        title: formData.title,
+        description: formData.description || 'No description provided',
+        category: formData.category,
+        date: date,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        isOffTheJob: formData.isOffTheJob,
+        totalHours: duration
+      }));
+      onSave(entries, true); // Pass true to indicate multiple entries
+    } else {
+      // Send only the fields the backend expects
+      onSave({
+        title: formData.title,
+        description: formData.description || 'No description provided',
+        category: formData.category,
+        date: formData.date,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        isOffTheJob: formData.isOffTheJob,
+        totalHours: duration
+      });
+    }
   };
 
   return (
     <div className="otj-form-container">
       <div className="form-card">
         <div className="form-header">
-          <h2>{initialData ? 'Edit Entry' : 'New Off-the-Job Entry'}</h2>
+          <h2>
+            {initialData ? 'Edit Entry' : 'New Off-the-Job Entry'}
+            {multiDateMode && selectedDates.length > 0 && (
+              <span className="entry-count-badge">
+                {selectedDates.length} {selectedDates.length === 1 ? 'entry' : 'entries'}
+              </span>
+            )}
+          </h2>
           <button className="btn-icon" onClick={onCancel}>✕</button>
         </div>
 
@@ -155,14 +212,71 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
             <div className="form-group">
               <label htmlFor="date">
                 Date <span className="required">*</span>
+                <label className="multi-date-toggle">
+                  <input
+                    type="checkbox"
+                    checked={multiDateMode}
+                    onChange={handleMultiModeToggle}
+                    disabled={!!initialData}
+                  />
+                  <span>Multi-date</span>
+                </label>
               </label>
-              <input
-                id="date"
-                type="date"
-                value={formData.date}
-                onChange={(e) => handleChange('date', e.target.value)}
-                required
-              />
+              {multiDateMode ? (
+                <div className="multi-date-selector">
+                  <input
+                    type="date"
+                    max={new Date().toISOString().split('T')[0]}
+                    onBlur={(e) => {
+                      if (e.target.value && !selectedDates.includes(e.target.value)) {
+                        handleDateToggle(e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && e.target.value) {
+                        e.preventDefault();
+                        if (!selectedDates.includes(e.target.value)) {
+                          handleDateToggle(e.target.value);
+                          e.target.value = '';
+                        }
+                      }
+                    }}
+                    className="date-picker"
+                  />
+                  <div className="selected-dates">
+                    {selectedDates.length === 0 ? (
+                      <p className="no-dates">Input date and press Enter or click the date picker above to select dates</p>
+                    ) : (
+                      selectedDates.map(date => (
+                        <span key={date} className="date-chip">
+                          {new Date(date).toLocaleDateString('en-GB', { 
+                            day: 'numeric', 
+                            month: 'short',
+                            year: 'numeric'
+                          })}
+                          <button
+                            type="button"
+                            onClick={() => handleDateToggle(date)}
+                            className="remove-date"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <input
+                  id="date"
+                  type="date"
+                  max={new Date().toISOString().split('T')[0]}
+                  value={formData.date}
+                  onChange={(e) => handleChange('date', e.target.value)}
+                  required
+                />
+              )}
             </div>
 
             <div className="form-group">

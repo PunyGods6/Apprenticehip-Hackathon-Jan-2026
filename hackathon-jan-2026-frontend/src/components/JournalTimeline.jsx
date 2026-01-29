@@ -72,6 +72,9 @@ function JournalTimeline({ entries, onEdit, onDelete }) {
                   <div className="entry-meta">
                     <span className="entry-category">📚 {entry.category}</span>
                     <span className="entry-hours">⏱️ {entry.totalHours?.toFixed(1) || 0}h</span>
+                    {entry.startTime && entry.endTime && (
+                      <span className="entry-time">🕐 {entry.startTime} - {entry.endTime}</span>
+                    )}
                   </div>
 
                   {entry.description && (
