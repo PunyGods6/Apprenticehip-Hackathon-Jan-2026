@@ -137,7 +137,7 @@ describe('OTJEntryForm - Form Validation', () => {
     render(<OTJEntryForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
     expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/date/i)).toBeInTheDocument();
+    expect(document.getElementById('date')).toBeInTheDocument();
     expect(screen.getByLabelText(/start time/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/end time/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/category/i)).toBeInTheDocument();

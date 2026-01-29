@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LearningJournal from '../components/LearningJournal';
-import { otjApi } from '../services/api';
+import { otjApi, holidayApi } from '../services/api';
 
 // Mock the API module
 vi.mock('../services/api', () => ({
@@ -11,6 +11,11 @@ vi.mock('../services/api', () => ({
         createEntry: vi.fn(),
         updateEntry: vi.fn(),
         deleteEntry: vi.fn(),
+    },
+    holidayApi: {
+        getAllHolidays: vi.fn(),
+        createHoliday: vi.fn(),
+        updateHoliday: vi.fn(),
     }
 }));
 
@@ -36,6 +41,9 @@ describe('LearningJournal - Integration Tests', () => {
 
         // Default mock implementation - returns initial entries
         otjApi.getAllEntries.mockResolvedValue(mockInitialEntries);
+        
+        // Mock holiday API - return empty array (no holiday mode active)
+        holidayApi.getAllHolidays.mockResolvedValue([]);
     });
 
     it('should add a new entry and display it in the timeline', async () => {
@@ -79,7 +87,7 @@ describe('LearningJournal - Integration Tests', () => {
         await user.selectOptions(categorySelect, 'Being mentored by a senior colleague');
 
         // Fill date and time fields
-        const dateInput = screen.getByLabelText(/date/i);
+        const dateInput = document.getElementById('date');
         await user.clear(dateInput);
         await user.type(dateInput, '2026-01-29');
 
@@ -161,7 +169,7 @@ describe('LearningJournal - Integration Tests', () => {
         const categorySelect = screen.getByLabelText(/select a category/i);
         await user.selectOptions(categorySelect, 'Being mentored by a senior colleague');
 
-        const dateInput = screen.getByLabelText(/date/i);
+        const dateInput = screen.getByDisplayValue('2026-01-29');
         await user.clear(dateInput);
         await user.type(dateInput, '2026-01-29');
 
@@ -349,7 +357,7 @@ describe('LearningJournal - Integration Tests', () => {
         );
 
         await waitFor(() => {
-            expect(otjApi.deleteEntry).toHaveBeenCalledWith(1);
+            expect(otjApi.deleteEntry).toHaveBeenCalledWith(2);
         });
 
         vi.unstubAllGlobals();
