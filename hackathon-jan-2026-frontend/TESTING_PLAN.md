@@ -15,9 +15,9 @@ This testing plan follows the **Software Development Lifecycle (SDLC)** testing 
     /\
    /  \     E2E Tests (Optional - time permitting)
   /----\    
- /      \   Integration Tests (2-3 tests)
+ /      \   Integration Tests (7 tests)
 /--------\  
-/----------\ Unit Tests (5-6 tests)
+/----------\ Unit Tests (15 tests)
 ```
 
 ## 🧪 Test Coverage
@@ -72,6 +72,11 @@ This testing plan follows the **Software Development Lifecycle (SDLC)** testing 
 - ✅ Add new entry and see it appear in timeline
 - ✅ Progress dashboard updates when entry added
 - ✅ Form resets after successful submission
+- ✅ Form submission with valid data
+- ✅ Display error message when entries fail to load
+- ✅ Show loading state while fetching entries
+- ✅ Edit existing entry and see changes reflected
+- ✅ Delete entry with confirmation
 
 **Why**: Validates end-to-end functionality from student perspective
 

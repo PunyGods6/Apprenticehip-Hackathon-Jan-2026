@@ -30,18 +30,31 @@ const OTJ_CATEGORIES = [
   }
 ];
 
-function OTJEntryForm({ onSave, onCancel }) {
-  const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    description: '',
-    date: new Date().toISOString().split('T')[0],
-    startTime: '09:00',
-    endTime: '10:00',
-    isOffTheJob: true,
-    ksbs: [],
-    documents: []
-  });
+function OTJEntryForm({ onSave, onCancel, initialData }) {
+  // Initialize form data with initialData if editing, otherwise use defaults
+  const [formData, setFormData] = useState(
+    initialData ? {
+      title: initialData.title || '',
+      category: initialData.category || '',
+      description: initialData.description || '',
+      date: initialData.date || new Date().toISOString().split('T')[0],
+      startTime: initialData.startTime || '09:00',
+      endTime: initialData.endTime || '10:00',
+      isOffTheJob: initialData.isOffTheJob ?? true,
+      ksbs: initialData.ksbs || [],
+      documents: initialData.documents || []
+    } : {
+      title: '',
+      category: '',
+      description: '',
+      date: new Date().toISOString().split('T')[0],
+      startTime: '09:00',
+      endTime: '10:00',
+      isOffTheJob: true,
+      ksbs: [],
+      documents: []
+    }
+  );
 
   // Calculate duration directly from formData
   const calculateDuration = () => {
@@ -91,7 +104,7 @@ function OTJEntryForm({ onSave, onCancel }) {
     <div className="otj-form-container">
       <div className="form-card">
         <div className="form-header">
-          <h2>New Off-the-Job Entry</h2>
+          <h2>{initialData ? 'Edit Entry' : 'New Off-the-Job Entry'}</h2>
           <button className="btn-icon" onClick={onCancel}>✕</button>
         </div>
 

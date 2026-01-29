@@ -10,6 +10,7 @@ import './LearningJournal.css';
 function LearningJournal() {
   const [entries, setEntries] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingEntry, setEditingEntry] = useState(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,6 +52,42 @@ function LearningJournal() {
       console.error('Failed to create entry:', err);
       alert('Failed to save entry. Please try again.');
     }
+  };
+
+  const handleEditEntry = (entry) => {
+    setEditingEntry(entry);
+    setShowForm(true);
+  };
+
+  const handleUpdateEntry = async (updatedEntry) => {
+    try {
+      const updated = await otjApi.updateEntry(editingEntry.id, updatedEntry);
+      setEntries(entries.map(e => e.id === editingEntry.id ? updated : e));
+      setShowForm(false);
+      setEditingEntry(null);
+    } catch (err) {
+      console.error('Failed to update entry:', err);
+      alert('Failed to update entry. Please try again.');
+    }
+  };
+
+  const handleDeleteEntry = async (entryId) => {
+    if (!window.confirm('Are you sure you want to delete this entry?')) {
+      return;
+    }
+    
+    try {
+      await otjApi.deleteEntry(entryId);
+      setEntries(entries.filter(e => e.id !== entryId));
+    } catch (err) {
+      console.error('Failed to delete entry:', err);
+      alert('Failed to delete entry. Please try again.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setShowForm(false);
+    setEditingEntry(null);
   };
 
   return (
@@ -102,12 +139,17 @@ function LearningJournal() {
 
             {showForm && (
               <OTJEntryForm 
-                onSave={handleAddEntry}
-                onCancel={() => setShowForm(false)}
+                onSave={editingEntry ? handleUpdateEntry : handleAddEntry}
+                onCancel={handleCancelEdit}
+                initialData={editingEntry}
               />
             )}
 
-            <JournalTimeline entries={entries} />
+            <JournalTimeline 
+              entries={entries}
+              onEdit={handleEditEntry}
+              onDelete={handleDeleteEntry}
+            />
           </>
         )}
       </div>

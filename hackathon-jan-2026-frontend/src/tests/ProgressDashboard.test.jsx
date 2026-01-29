@@ -20,7 +20,7 @@ describe('ProgressDashboard', () => {
         />
       );
 
-      expect(screen.getByText('5h')).toBeInTheDocument();
+      expect(screen.getByText('5.0h')).toBeInTheDocument();
     });
 
     it('should handle zero OTJ hours', () => {
@@ -72,7 +72,7 @@ describe('ProgressDashboard', () => {
       );
 
       // Variance = 8 - 6 = +2h
-      expect(screen.getByText('+2h')).toBeInTheDocument();
+      expect(screen.getByText('+2.0h')).toBeInTheDocument();
       expect(screen.getByText('Ahead of target!')).toBeInTheDocument();
     });
 
@@ -91,7 +91,7 @@ describe('ProgressDashboard', () => {
       );
 
       // Variance = 2 - 6 = -4h
-      expect(screen.getByText('-4h')).toBeInTheDocument();
+      expect(screen.getByText('-4.0h')).toBeInTheDocument();
       expect(screen.getByText('Behind target')).toBeInTheDocument();
     });
   });

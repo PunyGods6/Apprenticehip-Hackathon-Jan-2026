@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LearningJournal from '../components/LearningJournal';
 import { otjApi } from '../services/api';
@@ -9,6 +9,8 @@ vi.mock('../services/api', () => ({
   otjApi: {
     getAllEntries: vi.fn(),
     createEntry: vi.fn(),
+    updateEntry: vi.fn(),
+    deleteEntry: vi.fn(),
   }
 }));
 
@@ -261,5 +263,95 @@ describe('LearningJournal - Integration Tests', () => {
 
     // Verify loading message appears
     expect(screen.getByText(/loading entries/i)).toBeInTheDocument();
+  });
+
+  it('should allow user to edit an existing entry', async () => {
+    const mockEntry = {
+      id: 1,
+      title: 'Initial Title',
+      description: 'Initial Description',
+      category: 'Training',
+      date: '2025-01-15',
+      startTime: '09:00',
+      endTime: '12:00',
+      isOffTheJob: true,
+      totalHours: 3.0,
+    };
+
+    otjApi.getAllEntries.mockResolvedValue([mockEntry]);
+    otjApi.updateEntry.mockResolvedValue({ ...mockEntry, title: 'Updated Title' });
+
+    render(<LearningJournal />);
+
+    // Wait for the initial entry to load
+    await waitFor(() => {
+      expect(screen.getByText('Initial Title')).toBeInTheDocument();
+    });
+
+    // Click the edit button to open the form
+    const editButton = screen.getByLabelText(/edit entry/i);
+    fireEvent.click(editButton);
+
+    // Verify the form opens in edit mode with the correct title
+    await waitFor(() => {
+      expect(screen.getByText('Edit Entry')).toBeInTheDocument();
+    });
+
+    // Verify the form is pre-populated with existing data
+    expect(screen.getByDisplayValue('Initial Title')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Initial Description')).toBeInTheDocument();
+  });
+
+  it('should allow user to delete an entry', async () => {
+    const mockEntries = [
+      {
+        id: 1,
+        title: 'Entry to Delete',
+        description: 'This will be deleted',
+        category: 'Training',
+        date: '2025-01-15',
+        startTime: '09:00',
+        endTime: '12:00',
+        isOffTheJob: true,
+        totalHours: 3.0,
+      },
+      {
+        id: 2,
+        title: 'Entry to Keep',
+        description: 'This stays',
+        category: 'Meeting',
+        date: '2025-01-16',
+        startTime: '10:00',
+        endTime: '11:00',
+        isOffTheJob: false,
+        totalHours: 1.0,
+      },
+    ];
+
+    otjApi.getAllEntries.mockResolvedValue(mockEntries);
+    otjApi.deleteEntry.mockResolvedValue(undefined);
+
+    // Mock window.confirm to return true
+    vi.stubGlobal('confirm', vi.fn(() => true));
+
+    render(<LearningJournal />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Entry to Delete')).toBeInTheDocument();
+      expect(screen.getByText('Entry to Keep')).toBeInTheDocument();
+    });
+
+    const deleteButtons = screen.getAllByLabelText(/delete entry/i);
+    fireEvent.click(deleteButtons[0]);
+
+    expect(window.confirm).toHaveBeenCalledWith(
+      expect.stringContaining('Are you sure')
+    );
+
+    await waitFor(() => {
+      expect(otjApi.deleteEntry).toHaveBeenCalledWith(1);
+    });
+
+    vi.unstubAllGlobals();
   });
 });

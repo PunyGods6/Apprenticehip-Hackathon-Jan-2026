@@ -1,6 +1,6 @@
 import './JournalTimeline.css';
 
-function JournalTimeline({ entries }) {
+function JournalTimeline({ entries, onEdit, onDelete }) {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -44,9 +44,29 @@ function JournalTimeline({ entries }) {
                 <div className="entry-card">
                   <div className="entry-header">
                     <h3>{entry.title}</h3>
-                    {entry.isOffTheJob && (
-                      <span className="otj-badge">✓ Off the Job</span>
-                    )}
+                    <div className="entry-header-actions">
+                      {entry.isOffTheJob && (
+                        <span className="otj-badge">✓ Off the Job</span>
+                      )}
+                      <div className="entry-actions">
+                        <button 
+                          className="btn-icon-action" 
+                          onClick={() => onEdit(entry)}
+                          title="Edit entry"
+                          aria-label="Edit entry"
+                        >
+                          ✏️
+                        </button>
+                        <button 
+                          className="btn-icon-action btn-delete" 
+                          onClick={() => onDelete(entry.id)}
+                          title="Delete entry"
+                          aria-label="Delete entry"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="entry-meta">
