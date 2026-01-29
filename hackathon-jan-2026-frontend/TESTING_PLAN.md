@@ -17,7 +17,7 @@ This testing plan follows the **Software Development Lifecycle (SDLC)** testing 
   /----\    
  /      \   Integration Tests (7 tests)
 /--------\  
-/----------\ Unit Tests (15 tests)
+/----------\ Unit Tests (27 tests)
 ```
 
 ## 🧪 Test Coverage
@@ -40,6 +40,20 @@ This testing plan follows the **Software Development Lifecycle (SDLC)** testing 
 - ✅ Display duration in correct format (hours/minutes)
 
 **Why**: Critical feature that saves students time and prevents errors
+
+#### HolidayMode.test.jsx
+**Purpose**: Test holiday mode functionality
+- ✅ Display holiday mode component correctly
+- ✅ Toggle holiday mode on and off
+- ✅ Track holiday days used and remaining
+- ✅ Update holiday days by editing
+- ✅ Validate holiday days limits (0-28)
+- ✅ Display warning for low remaining days
+- ✅ Show holiday notice when mode is active
+- ✅ Handle holiday data fetch errors
+- ✅ Create holiday record if none exists
+
+**Why**: Allows students to pause OTJ targets during holidays without penalty
 
 ---
 

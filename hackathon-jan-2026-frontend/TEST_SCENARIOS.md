@@ -26,12 +26,24 @@
 | **INT-5** | Show loading state while fetching entries | Verify that loading indicator is shown while entries are being fetched from backend | Non-Functional | Should Have |
 | **INT-6** | Edit existing entry and see changes reflected | Verify complete edit flow: click edit → modify form fields → save → entry updates in timeline | Functional | Must Have |
 | **INT-7** | Delete entry with confirmation | Verify delete flow: click delete → confirm dialog → entry removed from timeline | Functional | Must Have |
+| **UNIT-16** | Display holiday mode component correctly | Verify that holiday mode component renders with toggle, days tracking, and progress bar | Functional | Should Have |
+| **UNIT-17** | Toggle holiday mode on and off | Verify that clicking the toggle switch enables/disables holiday mode | Functional | Should Have |
+| **UNIT-18** | Track holiday days used and remaining | Verify that days used are tracked correctly and remaining days are calculated | Functional | Should Have |
+| **UNIT-19** | Update holiday days by editing | Verify that users can click on days value to edit and update holiday days used | Functional | Should Have |
+| **UNIT-20** | Validate holiday days limits | Verify that holiday days cannot be negative or exceed total allowance | Functional | Must Have |
+| **UNIT-21** | Display warning for low remaining days | Verify that remaining days show warning styling when less than 5 days remain | Non-Functional | Should Have |
+| **UNIT-22** | Show holiday notice when mode is active | Verify that a notice appears indicating OTJ targets are paused when holiday mode is on | Functional | Should Have |
+| **UNIT-23** | Handle holiday data fetch errors | Verify that appropriate error message is shown when holiday data fails to load | Functional | Must Have |
+| **UNIT-24** | Create holiday record if none exists | Verify that system creates initial holiday record with defaults when none exists | Functional | Must Have |
+| **UNIT-25** | ProgressDashboard shows neutral state on holiday | Verify that variance card shows neutral styling and holiday icon when holiday mode is enabled | Functional | Must Have |
+| **UNIT-26** | ProgressDashboard shows normal variance when not on holiday | Verify that variance is calculated and displayed normally when holiday mode is disabled | Functional | Must Have |
+| **UNIT-27** | Holiday mode prevents behind-target penalty | Verify that users are not penalized for low hours when holiday mode is active | Functional | Must Have |
 
 ## Test File Locations
 
 ### Unit Tests
 - **ProgressDashboard.test.jsx**: `src/tests/ProgressDashboard.test.jsx`
-  - Tests: UNIT-1, UNIT-2, UNIT-3, UNIT-4, UNIT-5
+  - Tests: UNIT-1, UNIT-2, UNIT-3, UNIT-4, UNIT-5, UNIT-25, UNIT-26, UNIT-27
 
 - **OTJEntryForm.test.jsx**: `src/tests/OTJEntryForm.test.jsx`
   - Tests: UNIT-6, UNIT-7
@@ -41,6 +53,9 @@
 
 - **DocumentUpload.test.jsx**: `src/tests/DocumentUpload.test.jsx`
   - Tests: UNIT-12, UNIT-13, UNIT-14, UNIT-15
+
+- **HolidayMode.test.jsx**: `src/tests/HolidayMode.test.jsx`
+  - Tests: UNIT-16, UNIT-17, UNIT-18, UNIT-19, UNIT-20, UNIT-21, UNIT-22, UNIT-23, UNIT-24
 
 ### Integration Tests
 - **LearningJournal.test.jsx**: `src/tests/LearningJournal.test.jsx`
@@ -70,11 +85,11 @@ npm test -- ProgressDashboard
 
 ## Test Results
 
-**Total Tests**: 20
-- **Unit Tests**: 15
-- **Integration Tests**: 5
+**Total Tests**: 68
+- **Unit Tests**: 27
+- **Integration Tests**: 7
 
-**Test Status**: ✅ All Passing (20/20)
+**Test Status**: ✅ All Passing (68/68)
 
 **Coverage Goal**: 70-80% for critical components
 

@@ -44,6 +44,12 @@
   border: none;
 }
 
+.stat-card.neutral {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  border: none;
+}
+
 .stat-icon {
   font-size: 32px;
   line-height: 1;

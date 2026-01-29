@@ -77,4 +77,30 @@ export const ksbApi = {
   getKSBsByType: (type) => apiCall(`/ksbs/type/${type}`),
 };
 
-export default { otjApi, ksbApi };
+// Holiday API calls
+export const holidayApi = {
+  // Get all holidays
+  getAllHolidays: () => apiCall('/holidays'),
+  
+  // Get holiday by ID
+  getHolidayById: (id) => apiCall(`/holidays/${id}`),
+  
+  // Create new holiday record
+  createHoliday: (holiday) => apiCall('/holidays', {
+    method: 'POST',
+    body: JSON.stringify(holiday),
+  }),
+  
+  // Update holiday record
+  updateHoliday: (id, holiday) => apiCall(`/holidays/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(holiday),
+  }),
+  
+  // Delete holiday record
+  deleteHoliday: (id) => apiCall(`/holidays/${id}`, {
+    method: 'DELETE',
+  }),
+};
+
+export default { otjApi, ksbApi, holidayApi };

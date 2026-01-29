@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import ProgressDashboard from './ProgressDashboard';
+import HolidayMode from './HolidayMode';
 import OTJEntryForm from './OTJEntryForm';
 import JournalTimeline from './JournalTimeline';
-import { otjApi } from '../services/api';
+import { otjApi, holidayApi } from '../services/api';
 import './LearningJournal.css';
 
 function LearningJournal() {
@@ -14,14 +15,17 @@ function LearningJournal() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [holidayMode, setHolidayMode] = useState(false);
 
   // Target hours for the apprenticeship (example: 6 hours per week)
   const weeklyTarget = 6;
   const totalTarget = weeklyTarget * 52; // Annual target
+  const APPRENTICE_ID = 1;
 
-  // Fetch entries from backend on mount
+  // Fetch entries and holiday status from backend on mount
   useEffect(() => {
     loadEntries();
+    loadHolidayStatus();
   }, []);
 
   const loadEntries = async () => {
@@ -35,6 +39,17 @@ function LearningJournal() {
       setError('Failed to load entries. Make sure the backend is running.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadHolidayStatus = async () => {
+    try {
+      const holidays = await holidayApi.getAllHolidays();
+      const userHoliday = holidays.find(h => h.apprenticeId === APPRENTICE_ID);
+      setHolidayMode(userHoliday?.holidayMode || false);
+    } catch (err) {
+      console.error('Failed to load holiday status:', err);
+      // Don't show error to user, just default to false
     }
   };
 
@@ -135,7 +150,10 @@ function LearningJournal() {
               weeklyTarget={weeklyTarget}
               totalTarget={totalTarget}
               entries={entries}
+              holidayMode={holidayMode}
             />
+
+            <HolidayMode onHolidayModeChange={setHolidayMode} />
 
             {showForm && (
               <OTJEntryForm 
