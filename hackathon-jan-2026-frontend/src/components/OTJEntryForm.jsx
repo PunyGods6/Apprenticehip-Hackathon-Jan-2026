@@ -132,7 +132,7 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
       onSave(entries, true); // Pass true to indicate multiple entries
     } else {
       // Send only the fields the backend expects
-      onSave({
+      const entryData = {
         title: formData.title,
         description: formData.description || 'No description provided',
         category: formData.category,
@@ -141,7 +141,14 @@ function OTJEntryForm({ onSave, onCancel, initialData }) {
         endTime: formData.endTime,
         isOffTheJob: formData.isOffTheJob,
         totalHours: duration
-      });
+      };
+      
+      // Preserve creation timestamp when editing
+      if (initialData && initialData.creation) {
+        entryData.creation = initialData.creation;
+      }
+      
+      onSave(entryData);
     }
   };
 
